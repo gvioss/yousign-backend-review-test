@@ -59,7 +59,7 @@ class Event
      */
     private ?string $comment;
 
-    public function __construct(int $id, string $type, Actor $actor, Repo $repo, array $payload, \DateTimeImmutable $createAt, ?string $comment)
+    public function __construct(int $id, string $type, Actor $actor, Repo $repo, array $payload, \DateTimeImmutable $createAt, ?string $comment = null)
     {
         $this->id = $id;
         EventType::assertValidChoice($type);
