@@ -8,6 +8,9 @@ use App\Command\CreateEvent;
 use App\Command\ImportGitHubArchive;
 use App\Dto\Event;
 use App\Enum\EventType;
+use App\Exception\ImportGithubArchiveException;
+use App\Reader\GitHubArchiveReader;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -16,8 +19,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ImportGitHubEventsHandler implements CommandHandler
 {
     public function __construct(
+        private readonly GitHubArchiveReader $reader,
         private readonly HttpClientInterface $httpClient,
-        private readonly CommandBus $commandBus
+        private readonly CommandBus $commandBus,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -27,10 +32,14 @@ class ImportGitHubEventsHandler implements CommandHandler
         $filepath = sprintf('%s/%s', sys_get_temp_dir(), $filename);
 
         if (!file_exists($filepath)) {
-            $this->download($filename, $filepath);
+            try {
+                $this->download($filename, $filepath);
+            } catch (\Exception $e) {
+                $this->logger->critical('Archive download fail.', ['filename' => $filename, 'error' => $e->getMessage()]);
+            }
         }
 
-        foreach ($this->read($filepath) as $data) {
+        foreach ($this->reader->read($filepath) as $data) {
             if ($type = EventType::getEquivalentFromGHArchiveType($data['type'])) {
                 $this->commandBus->dispatch(new CreateEvent(Event::fromArray($type, $data)));
             }
@@ -39,12 +48,15 @@ class ImportGitHubEventsHandler implements CommandHandler
         unlink($filepath);
     }
 
+    /**
+     * @throws ImportGithubArchiveException
+     */
     private function download(string $filename, string $filepath): void
     {
         $response = $this->httpClient->request('GET', sprintf('https://data.gharchive.org/%s', $filename));
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new \Exception('The requested archive is missing.');
+            throw ImportGithubArchiveException::missingArchive($filename);
         }
 
         $file = fopen($filepath, 'w');
@@ -52,27 +64,5 @@ class ImportGitHubEventsHandler implements CommandHandler
             fwrite($file, $chunk->getContent());
         }
         fclose($file);
-    }
-
-    private function read(string $filepath): iterable
-    {
-        $file = gzopen($filepath, 'r');
-
-        while (!gzeof($file)) {
-            $event = gzgets($file, 4096);
-
-            if (!json_validate($event)) {
-                continue;
-            }
-
-            try {
-                yield json_decode($event, true, flags: JSON_THROW_ON_ERROR);
-            } catch (\Exception) {
-                // TODO : we could log things here, to be able to understand why json can't be decoded and adjust logic
-                continue;
-            }
-        }
-
-        gzclose($file);
     }
 }
