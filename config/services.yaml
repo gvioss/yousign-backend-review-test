@@ -24,5 +24,3 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: [ 'controller.service_arguments' ]
-
-    App\Entity\EventType: ~
