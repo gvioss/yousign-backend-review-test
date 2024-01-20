@@ -19,4 +19,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->load('App\Controller\\', __DIR__ . '/../src/Controller/')
         ->tag('controller.service_arguments');
+
+    $services->load('App\DataFixtures\\', '/%kernel.project_dir%/fixtures/*');
 };
