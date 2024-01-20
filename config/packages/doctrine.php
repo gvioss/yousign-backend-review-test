@@ -9,7 +9,9 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (ContainerConfigurator $container, DoctrineConfig $doctrine, FrameworkConfig $framework): void {
 
-    $doctrine->dbal()->connection('default')->url(env('DATABASE_URL'));
+    $doctrine->dbal()->connection('default')
+        ->url(env('DATABASE_URL'))
+        ->schemaFilter('~^(?!messenger_messages)~');
 
     $doctrine->orm()->autoGenerateProxyClasses(true);
 
