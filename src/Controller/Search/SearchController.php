@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Search;
 
 use App\Dto\SearchInput;
 use App\Repository\ReadEventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,21 +11,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class SearchController
 {
-    private ReadEventRepository $repository;
-    private SerializerInterface $serializer;
-
     public function __construct(
-        ReadEventRepository $repository,
-        SerializerInterface  $serializer
+        private readonly ReadEventRepository $repository,
+        private readonly SerializerInterface $serializer
     ) {
-        $this->repository = $repository;
-        $this->serializer = $serializer;
     }
 
-    /**
-     * @Route(path="/api/search", name="api_search", methods={"GET"})
-     */
-    public function searchCommits(Request $request): JsonResponse
+    #[Route(path: '/api/search', name: 'api_search', methods: ['GET'])]
+    public function __invoke(Request $request): JsonResponse
     {
         $searchInput = $this->serializer->denormalize($request->query->all(), SearchInput::class);
 
