@@ -17,4 +17,9 @@ enum EventType: string
             default  => null
         };
     }
+
+    public function isCommit(): bool
+    {
+        return self::COMMIT === $this;
+    }
 }

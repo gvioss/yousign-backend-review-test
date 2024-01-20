@@ -4,65 +4,51 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\EventType;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Webmozart\Assert\Assert;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="`event`",
- *    indexes={@ORM\Index(name="IDX_EVENT_TYPE", columns={"type"})}
- * )
- */
+#[ORM\Entity]
+#[ORM\Table(name: '`event`')]
+#[ORM\Index(columns: ['type'], name: 'IDX_EVENT_TYPE')]
 class Event
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="bigint")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="EventType", nullable=false)
-     */
-    private string $type;
+    #[ORM\Column(type: Types::STRING, enumType: EventType::class)]
+    private EventType $type;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[ORM\Column(type: Types::INTEGER)]
     private int $count = 1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Actor", cascade={"persist"})
-     * @ORM\JoinColumn(name="actor_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: Actor::class, cascade: ['persist'])]
     private Actor $actor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Repo", cascade={"persist"})
-     * @ORM\JoinColumn(name="repo_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: Repo::class, cascade: ['persist'])]
     private Repo $repo;
 
-    /**
-     * @ORM\Column(type="json", nullable=false, options={"jsonb": true})
-     */
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
     private array $payload;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     */
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createAt;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment;
 
-    public function __construct(int $id, string $type, Actor $actor, Repo $repo, array $payload, \DateTimeImmutable $createAt, ?string $comment = null)
-    {
+    public function __construct(
+        int $id,
+        EventType $type,
+        Actor $actor,
+        Repo $repo,
+        array $payload,
+        \DateTimeImmutable $createAt,
+        ?string $comment = null
+    ) {
         $this->id = $id;
-        EventType::assertValidChoice($type);
         $this->type = $type;
         $this->actor = $actor;
         $this->repo = $repo;
@@ -70,7 +56,7 @@ class Event
         $this->createAt = $createAt;
         $this->comment = $comment;
 
-        if ($type === EventType::COMMIT) {
+        if ($type->isCommit()) {
             $this->count = $payload['size'] ?? 1;
         }
     }
@@ -80,7 +66,7 @@ class Event
         return $this->id;
     }
 
-    public function type(): string
+    public function type(): EventType
     {
         return $this->type;
     }

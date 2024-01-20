@@ -22,7 +22,7 @@ readonly class Event
     {
         return new Event(
             $event->id(),
-            EventType::from($event->type()),
+            $event->type(),
             Actor::fromEntity($event->actor()),
             Repo::fromEntity($event->repo()),
             $event->payload(),

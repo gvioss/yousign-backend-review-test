@@ -4,8 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Actor;
 use App\Entity\Event;
-use App\Entity\EventType;
 use App\Entity\Repo;
+use App\Enum\EventType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
