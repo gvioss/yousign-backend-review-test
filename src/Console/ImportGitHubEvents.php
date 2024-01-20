@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
     name: 'app:import-github-events',
     description: 'Import GH events'
 )]
-class ImportGitHubEventsCommand extends Command
+class ImportGitHubEvents extends Command
 {
     public function __construct(
         private readonly CommandBus $commandBus
