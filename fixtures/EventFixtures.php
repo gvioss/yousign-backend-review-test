@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Actor;
-use App\Entity\Event;
-use App\Entity\Repo;
-use App\Enum\EventType;
+use App\GitHubStatistics\Domain\Entity\Actor;
+use App\GitHubStatistics\Domain\Entity\Event;
+use App\GitHubStatistics\Domain\Entity\Repo;
+use App\GitHubStatistics\Domain\Enum\EventType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

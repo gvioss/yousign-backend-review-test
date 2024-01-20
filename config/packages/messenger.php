@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Bus\AsyncCommand;
+use App\GitHubStatistics\Domain\Bus\AsyncCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\FrameworkConfig;
 

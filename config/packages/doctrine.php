@@ -19,11 +19,11 @@ return static function (ContainerConfigurator $container, DoctrineConfig $doctri
         ->autoMapping(true)
         ->namingStrategy('doctrine.orm.naming_strategy.underscore_number_aware');
 
-    $em->mapping('App')
+    $em->mapping('GitHubStatistics')
         ->isBundle(false)
-        ->dir('%kernel.project_dir%/src/Entity')
-        ->prefix('App\Entity')
-        ->alias('App');
+        ->dir('%kernel.project_dir%/src/GitHubStatistics/Domain/Entity')
+        ->prefix('App\GitHubStatistics\Domain\Entity')
+        ->alias('Domain_GitHubStatistics_Entity');
 
     if ($container->env() === 'test') {
         $doctrine->dbal()->connection('default')

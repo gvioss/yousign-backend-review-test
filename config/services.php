@@ -13,11 +13,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->load('App\\', __DIR__ . '/../src/')
         ->exclude([
-        __DIR__ . '/../src/Entity/',
-        __DIR__ . '/../src/Kernel.php',
-    ]);
+            __DIR__ . '/../src/*/Domain/Entity/',
+            __DIR__ . '/../src/Kernel.php',
+        ]);
 
-    $services->load('App\Controller\\', __DIR__ . '/../src/Controller/')
+    $services->load('App\GitHubStatistics\Infrastructure\Controller\\', __DIR__ . '/../src/GitHubStatistics/Infrastructure/Controller/')
         ->tag('controller.service_arguments');
 
     $services->load('App\DataFixtures\\', '/%kernel.project_dir%/fixtures/*');
