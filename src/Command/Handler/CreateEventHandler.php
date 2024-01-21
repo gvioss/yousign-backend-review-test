@@ -30,7 +30,7 @@ class CreateEventHandler implements CommandHandler
 
         $this->entityManager->persist(new Event(
             $command->event->id,
-            $command->event->type->value,
+            $command->event->type,
             $this->getActorEntity($command->event->actor),
             $this->getRepoEntity($command->event->repo),
             $command->event->payload,
