@@ -30,6 +30,7 @@
         "symfony/yaml": "^6.4"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "*",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "liip/functional-test-bundle": "^4.6",
         "liip/test-fixtures-bundle": "^2.4",
