@@ -4,6 +4,7 @@ namespace App\GitHubStatistics\Application\Handler;
 
 use App\GitHubStatistics\Application\CreateEvent;
 use App\GitHubStatistics\Application\Dto\Event;
+use App\GitHubStatistics\Application\Fetcher\GitHubArchiveFetcher;
 use App\GitHubStatistics\Application\ImportGitHubArchive;
 use App\GitHubStatistics\Application\Reader\GitHubArchiveReader;
 use App\GitHubStatistics\Domain\Bus\CommandBus;

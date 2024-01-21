@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Fetcher;
+namespace App\GitHubStatistics\Application\Fetcher;
 
-use App\Exception\ImportGithubArchiveException;
+use App\GitHubStatistics\Domain\Exception\ImportGithubArchiveException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
