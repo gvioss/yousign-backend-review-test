@@ -4,6 +4,9 @@ namespace App\Command;
 
 use App\Bus\AsyncCommand;
 
+/**
+ * @see ImportGitHubEventsHandler
+ */
 readonly class ImportGitHubArchive implements AsyncCommand
 {
     /**
