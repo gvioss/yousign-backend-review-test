@@ -80,6 +80,21 @@ vendor: var/docker.build composer.json composer.lock ## Install composer depende
 	@$(PHP_RUN) composer install
 	@$(call log_success,Done)
 
+composer-update: var/docker.build
+	@$(call log,Updating vendor ...)
+	@$(PHP_RUN) composer update
+	@$(call log_success,Done)
+
+composer-require: var/docker.build
+	@$(call log,Require new dependency ...)
+	@$(PHP_RUN) composer require $(DEP)
+	@$(call log_success,Done)
+
+composer-require-dev: var/docker.build
+	@$(call log,Require new dependency ...)
+	@$(PHP_RUN) composer require $(DEP) --dev
+	@$(call log_success,Done)
+
 .PHONY: db
 db: var/docker.build
 	@$(call log,Preparing db ...)
