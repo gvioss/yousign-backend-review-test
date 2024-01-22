@@ -22,7 +22,7 @@ class GitHubArchiveFetcher
     {
         $filepath = sprintf('%s/%s', sys_get_temp_dir(), $filename);
 
-        if (!file_exists($filepath)) {
+        if (file_exists($filepath)) {
             return $filepath;
         }
 
