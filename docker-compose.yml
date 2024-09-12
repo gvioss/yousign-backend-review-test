@@ -8,6 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - './config/docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf'
+      - './config/docker/supervisor/async.conf:/etc/supervisor/conf.d/messenger_consumer_async.conf'
     environment:
       COMPOSER_HOME: /tmp/composer
     depends_on:

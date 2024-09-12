@@ -3,11 +3,10 @@
 namespace App\Tests\Func;
 
 use App\DataFixtures\EventFixtures;
-use App\Entity\Event;
 use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EventControllerTest extends WebTestCase
 {
